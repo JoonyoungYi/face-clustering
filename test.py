@@ -51,15 +51,13 @@ if face_encoding_array is None:
         rgb_small_frame = small_frame[:, :, ::-1]
 
         # Find all the faces and face encodings in the current frame of video
-        face_locations = face_recognition.face_locations(
-            rgb_small_frame, model="cnn")
+        face_locations = face_recognition.face_locations(rgb_small_frame)
         face_encodings = face_recognition.face_encodings(
             rgb_small_frame, face_locations)
         for face_encoding in face_encodings:
             face_encoding_array = np.append(
                 face_encoding_array, face_encoding.reshape(1, 128), axis=0)
             print(face_encoding_array.shape)
-
 
         print('>> Frame Processing')
 
@@ -132,7 +130,7 @@ while True:
     for face_encoding in face_encodings:
         # See if the face is a match for the known face(s)
         distances = face_recognition.face_distance(known_face_encodings,
-                                                 face_encoding)
+                                                   face_encoding)
 
         # If a match was found in known_face_encodings, just use the first one.
         index = np.argmin(distances)
